@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404 — Game over · K2" noindex>
+  <section class="over">
+    <div>
+      <p class="eyebrow">Error 404 · Level not found</p>
+      <h1>Game over.</h1>
+      <p>This level doesn’t exist (anymore). The old portfolio at <code>/app</code> retired — the new world starts on the home page.</p>
+      <a class="btn" href="/" data-continue>Continue? Y</a>
+    </div>
+  </section>
+  <script is:inline>
+    // 舊作品集的深層連結直接送回首頁
+    if (location.pathname.startsWith('/app')) location.replace('/');
+  </script>
+</Base>

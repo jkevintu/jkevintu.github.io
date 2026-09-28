@@ -1,0 +1,204 @@
+---
+import Tour from '../components/Tour.astro';
+import Base from '../layouts/Base.astro';
+import { BUILDS, NOW, QUOTES, SIDE_QUESTS, SITE, SPAWN, STATS, WORLDS } from '../data/content';
+import { INK_HEX } from '../lib/iso/palette';
+import { cubeSvg } from '../lib/iso/sprite';
+
+const bigCube = cubeSvg({ top: INK_HEX.yellow, left: INK_HEX.pink, right: INK_HEX.paper }, 16);
+---
+
+<Base>
+  <Tour />
+
+  <!-- 02 Now playing -->
+  <section class="now" id="now" aria-labelledby="now-title">
+    <div class="container now__grid">
+      <div data-reveal>
+        <p class="eyebrow eyebrow--light">Now playing</p>
+        <h2 id="now-title" class="now__title">Building <em>Agent Studio</em> at Agora.</h2>
+        <p class="now__body">{NOW.body}</p>
+        <dl class="now__meta">
+          <div><dt>Role</dt><dd>{NOW.role}</dd></div>
+          <div><dt>Since</dt><dd>{NOW.since}</dd></div>
+          <div><dt>Base</dt><dd>{NOW.where}</dd></div>
+        </dl>
+        <ul class="tags tags--light">{NOW.chips.map((c) => <li>{c}</li>)}</ul>
+      </div>
+      <figure class="console" data-reveal aria-label="Illustration: a live voice waveform">
+        <div class="console__bar" aria-hidden="true">
+          <span class="console__dots"><i></i><i></i><i></i></span>
+          <span>agent-studio</span>
+          <span class="console__live">● Live</span>
+        </div>
+        <canvas class="console__wave" width="176" height="64" data-wave aria-hidden="true"></canvas>
+        <figcaption class="console__foot">
+          <span>Voice agents</span><span>Real-time</span><span>At scale</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- By the numbers -->
+  <section class="section section--tight" aria-label="By the numbers">
+    <div class="container">
+      <ul class="stats">
+        {
+          STATS.map((s) => (
+            <li class="stat" data-reveal style={`--c: var(--${s.ink})`} data-ink={s.ink}>
+              <strong class="stat__value">{s.value}</strong>
+              <span class="stat__label">{s.label}</span>
+              <span class="stat__note">{s.note}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 03 Selected builds -->
+  <section class="section" id="work" aria-labelledby="work-title">
+    <div class="container">
+      <header class="section__head" data-reveal>
+        <div>
+          <p class="eyebrow">Selected builds</p>
+          <h2 id="work-title">Things I’ve taken from fog to shipped.</h2>
+        </div>
+        <p>Platforms, AI features, founder bets and craft projects — each one started as a vague idea and ended up in real people’s hands.</p>
+      </header>
+      <ul class="builds">
+        {
+          BUILDS.map((b) => (
+            <li class="card" data-reveal style={`--c: var(--${b.ink})`}>
+              <div class="card__art" style={`background-image: url(/ht/linear-${b.ink}.svg)`}>
+                <canvas data-model={b.model} aria-hidden="true" />
+                {b.featured && <span class="card__badge">Now</span>}
+              </div>
+              <div class="card__body">
+                <p class="card__meta">
+                  <span>{b.org}</span>
+                  <span>{b.years}</span>
+                </p>
+                <h3>{b.title}</h3>
+                <p>{b.body}</p>
+                <ul class="tags tags--sm">
+                  {b.tags.map((t) => (
+                    <li>{t}</li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 04 Quest log -->
+  <section class="section section--alt" id="path" aria-labelledby="path-title">
+    <div class="container quest">
+      <header class="quest__intro" data-reveal>
+        <p class="eyebrow">Quest log</p>
+        <h2 id="path-title">Engineer → PM → AI platforms.</h2>
+        <p>Fifteen years, ten levels. I started by writing the front-end, then founded, then moved into product — and never stopped building along the way.</p>
+        <div class="spawn">
+          <span class="spawn__label">Spawn point</span>
+          <strong>{SPAWN.title}</strong>
+          <span>{SPAWN.org}</span>
+        </div>
+      </header>
+      <div class="quest__log">
+        {
+          WORLDS.map((w) => (
+            <section class="world" data-reveal style={`--c: var(--${w.ink})`} aria-label={`${w.name}: ${w.subtitle}`}>
+              <h3 class="world__head">
+                <b data-ink={w.ink}>{w.name}</b>
+                <span>{w.subtitle}</span>
+              </h3>
+              <ol class="levels">
+                {w.levels.map((l) => (
+                  <li class="level">
+                    <span class="level__lv">Lv.{l.lv}</span>
+                    <span class="level__years">{l.years}</span>
+                    <div class="level__main">
+                      <p class="level__role">
+                        {l.role} <span>· {l.org}</span>
+                      </p>
+                      <p class="level__note">{l.note}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 Party notes -->
+  <section class="section" aria-labelledby="notes-title">
+    <div class="container">
+      <header class="section__head section__head--solo" data-reveal>
+        <div>
+          <p class="eyebrow">Party notes</p>
+          <h2 id="notes-title">What teammates say.</h2>
+        </div>
+      </header>
+      <div class="quotes">
+        {
+          QUOTES.map((q) => (
+            <figure class="quote" data-reveal style={`--c: var(--${q.ink})`}>
+              <svg class="quote__mark" viewBox="0 0 9 6" shape-rendering="crispEdges" aria-hidden="true">
+                <path d="M0 0h3v4H2v1H1v1H0zM5 0h3v4H7v1H6v1H5z" />
+              </svg>
+              <blockquote>{q.text}</blockquote>
+              <figcaption>
+                <strong>{q.name}</strong>
+                <span>{q.role}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+      <ul class="sidequests">
+        {
+          SIDE_QUESTS.map((s) => (
+            <li data-reveal>
+              <span class="eyebrow">Side quest · {s.label}</span>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 06 Contact -->
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="contact__ht contact__ht--a" aria-hidden="true"></div>
+    <div class="contact__ht contact__ht--b" aria-hidden="true"></div>
+    <div class="container contact__grid">
+      <div data-reveal>
+        <p class="contact__start">Press start</p>
+        <h2 id="contact-title">Got a fuzzy idea? Let’s make it run.</h2>
+        <p class="contact__body">Voice agents, AI products, zero-to-one builds — or just trading notes on product craft. My inbox is open.</p>
+        <div class="contact__cta">
+          <a class="btn btn--paper" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          <a class="btn btn--outline" href={SITE.links.linkedin} rel="me noopener" target="_blank">LinkedIn ↗</a>
+          <a class="btn btn--outline" href={SITE.links.github} rel="me noopener" target="_blank">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="contact__cube" aria-hidden="true" set:html={bigCube} />
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initIcons } from '../scripts/icons';
+  import { initWave } from '../scripts/wave';
+
+  initIcons();
+  const wave = document.querySelector<HTMLCanvasElement>('[data-wave]');
+  if (wave) initWave(wave);
+</script>

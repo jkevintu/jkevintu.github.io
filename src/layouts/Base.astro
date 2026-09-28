@@ -1,0 +1,103 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource/silkscreen/400.css';
+import '../styles/global.css';
+import { SITE } from '../data/content';
+import { INK_HEX } from '../lib/iso/palette';
+import { cubeSvg } from '../lib/iso/sprite';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const { title = SITE.title, description = SITE.description, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const logo = cubeSvg({ top: INK_HEX.yellow, left: INK_HEX.pink, right: INK_HEX.blue }, 26);
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Kevin Tu',
+  alternateName: 'K2',
+  url: SITE.url,
+  email: `mailto:${SITE.email}`,
+  jobTitle: 'Sr. Product Manager, AI',
+  worksFor: { '@type': 'Organization', name: 'Agora' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Sunnyvale', addressRegion: 'CA', addressCountry: 'US' },
+  sameAs: [SITE.links.linkedin, SITE.links.github],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content={INK_HEX.paper} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL('/og.png', SITE.url).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="nav" data-nav>
+      <div class="container nav__inner">
+        <a class="brand" href="/" aria-label="Kevin (K2) Tu — home">
+          <Fragment set:html={logo} />
+          <b>K2</b>
+          <span>Kevin Tu</span>
+        </a>
+        <nav aria-label="Primary">
+          <ul class="nav__links">
+            <li><a href="/#tour">Tour</a></li>
+            <li><a href="/#work">Work</a></li>
+            <li><a href="/#path">Path</a></li>
+            <li><a href="/#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <a class="btn btn--sm" href={`mailto:${SITE.email}`}>Say hi</a>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="footer">
+      <div class="container footer__inner">
+        <span>© {new Date().getFullYear()} Kevin (K2) Tu · {SITE.location}</span>
+        <span class="footer__made">Rendered with voxels, dithering &amp; three inks.</span>
+        <a href="#main">Back to top ↑</a>
+      </div>
+    </footer>
+    <script>
+      const nav = document.querySelector<HTMLElement>('[data-nav]');
+      const onScroll = () => nav?.toggleAttribute('data-scrolled', scrollY > 8);
+      addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // 進場動畫：區塊捲進畫面才浮上來
+      const io = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }),
+        { rootMargin: '0px 0px -8% 0px' },
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>
