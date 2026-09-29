@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BUILDS, CHAPTERS, QUOTES, SITE, STATS, WORLDS } from '../../src/data/content';
+import { AWARDS, BUILDS, CHAPTERS, COMMUNITY, PATENTS, PULL_QUOTE, SITE, STATS, WORLDS, patentUrl } from '../../src/data/content';
 import { HALFTONES, density, halftoneDots, halftoneSvg } from '../../src/lib/halftone';
 import { STATIONS } from '../../src/lib/iso/island';
 import { MODEL_IDS, modelVoxels } from '../../src/lib/iso/models';
@@ -11,7 +11,8 @@ describe('content', () => {
   });
 
   it('每個作品都有體素模型與必要欄位', () => {
-    expect(BUILDS.length % 4).toBe(0); // 4 欄格線剛好排滿
+    expect(BUILDS.length % 3).toBe(0); // 3 欄格線剛好排滿
+    expect(new Set(BUILDS.map((b) => b.title)).size).toBe(BUILDS.length);
     for (const b of BUILDS) {
       expect(MODEL_IDS).toContain(b.model);
       expect(b.title.length).toBeGreaterThan(2);
@@ -32,7 +33,43 @@ describe('content', () => {
 
   it('數字與推薦都有值', () => {
     expect(STATS).toHaveLength(4);
-    for (const q of QUOTES) expect(q.name && q.role && q.text).toBeTruthy();
+    expect(PULL_QUOTE.name && PULL_QUOTE.role && PULL_QUOTE.text).toBeTruthy();
+  });
+
+  it('社群 bento 剛好排滿 3 欄（精選佔 2 格 + 最後一格推薦）', () => {
+    const cells = COMMUNITY.reduce((n, c) => n + (c.featured ? 2 : 1), 0) + 1;
+    expect(cells % 3).toBe(0);
+    expect(COMMUNITY.filter((c) => c.featured)).toHaveLength(1);
+    for (const c of COMMUNITY) {
+      expect(c.org && c.role && c.years && c.text).toBeTruthy();
+      expect(c.text.split(/\s+/).length).toBeLessThanOrEqual(30);
+    }
+  });
+
+  it('專利：公開號格式正確、連結指向 Google Patents、統計數字一致', () => {
+    const numbers = PATENTS.flatMap((p) => p.numbers);
+    for (const n of numbers) {
+      expect(n).toMatch(/^(US|WO) 2024\/\d{6,7} A1$/);
+      expect(patentUrl(n)).toMatch(/^https:\/\/patents\.google\.com\/patent\/(US|WO)2024\d{6,7}A1$/);
+    }
+    expect(new Set(numbers).size).toBe(numbers.length);
+    const stat = STATS.find((s) => /patent/i.test(s.label));
+    expect(stat?.value).toBe(String(numbers.length));
+  });
+
+  it('外部連結：有 href 就要是 https 且網域與標籤一致', () => {
+    const links = [...BUILDS, ...COMMUNITY].flatMap((x) => (x.link ? [x.link] : []));
+    expect(links.length).toBeGreaterThan(0);
+    for (const l of links) {
+      if (!l.href) continue;
+      const url = new URL(l.href);
+      expect(url.protocol).toBe('https:');
+      expect(url.hostname).toBe(l.label);
+    }
+  });
+
+  it('獎項欄位齊全', () => {
+    for (const a of AWARDS) expect(a.year && a.event && a.prize && a.role && a.project && a.note).toBeTruthy();
   });
 
   it('每個模型都至少有底座以上的內容', () => {

@@ -49,6 +49,30 @@ const BUILDERS: Record<ModelId, (w: VoxelWorld) => void> = {
     w.box(4, 0, 5, 4, 0, 7, 'yellow');
     w.set(3, 0, 5, 'yellow');
   },
+  // Karakuma：熊耳朵麥克風（kara-oke + kuma）
+  mic: (w) => {
+    w.box(2, 2, 1, 2, 2, 3, 'ink');
+    w.box(1, 1, 4, 3, 3, 6, 'yellow');
+    w.set(1, 3, 7, 'yellow').set(3, 1, 7, 'yellow');
+    w.set(1, 3, 5, 'ink').set(3, 3, 5, 'ink').set(2, 3, 4, 'pink');
+    w.box(4, 0, 6, 4, 0, 8, 'pink');
+    w.set(3, 0, 6, 'pink');
+  },
+  // Makeready：兩張疊起來比對的印刷打樣，上面有三色網點
+  press: (w) => {
+    w.box(0, 1, 1, 3, 4, 1, 'paper');
+    w.box(1, 0, 3, 4, 3, 3, 'paper');
+    w.set(2, 1, 3, 'yellow').set(3, 2, 3, 'pink').set(2, 2, 3, 'blue');
+    w.set(0, 4, 1, 'pink').set(3, 1, 1, 'blue');
+  },
+  // Fantimate：粉絲的愛心 + 一疊金幣
+  patron: (w) => {
+    w.set(1, 2, 5, 'pink').set(3, 2, 5, 'pink');
+    w.box(1, 2, 4, 3, 2, 4, 'pink');
+    w.set(2, 2, 3, 'pink');
+    w.cylinder(3.5, 3.5, 1, 1, 2, 'yellow');
+    w.set(3, 3, 3, 'yellow');
+  },
   cap: (w) => {
     w.box(1, 1, 1, 3, 3, 2, 'ink');
     w.box(0, 0, 3, 4, 4, 3, 'ink');

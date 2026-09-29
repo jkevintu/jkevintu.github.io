@@ -217,7 +217,9 @@ a {
   color: var(--paper-2a);
 }
 
-[data-ink='yellow'] {
+/* 黃、粉底上的小字用墨色（紙色在粉紅上對比只有 ~2.9:1，不到 AA） */
+[data-ink='yellow'],
+[data-ink='pink'] {
   --on: var(--ink);
 }
 
@@ -709,9 +711,6 @@ a {
   line-height: 0.95;
   letter-spacing: -0.04em;
 }
-.section__head--solo {
-  grid-template-columns: minmax(0, 1fr);
-}
 .section__head > p {
   margin: 0;
   max-width: 32em;
@@ -890,8 +889,8 @@ a {
 /* 作品卡 */
 .builds {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -915,14 +914,14 @@ a {
   position: relative;
   display: grid;
   place-items: center;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
   border-bottom: 2px solid var(--ink);
   background-color: color-mix(in srgb, var(--c) 12%, var(--paper));
   background-size: 100% 100%;
   background-blend-mode: multiply;
 }
 .card__art canvas {
-  width: 58%;
+  width: 42%;
   height: auto;
   image-rendering: pixelated;
   transition: transform 0.3s steps(3);
@@ -935,7 +934,7 @@ a {
   top: 12px;
   left: 12px;
   background: var(--pink);
-  color: var(--paper);
+  color: var(--ink);
   font-family: var(--pixel);
   font-size: 10px;
   text-transform: uppercase;
@@ -973,6 +972,26 @@ a {
   font-size: 15px;
   line-height: 1.55;
   color: var(--ink-2);
+}
+
+/* 卡片外部連結 */
+.linkout {
+  align-self: flex-start;
+  margin-top: 4px;
+  font-family: var(--pixel);
+  font-size: 11px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  border-bottom: 2px solid var(--c, var(--ink));
+  padding-bottom: 1px;
+}
+a.linkout:hover {
+  background: var(--yellow);
+}
+.linkout--soon {
+  color: var(--ink-2);
+  border-bottom-style: dashed;
 }
 
 /* 經歷 */
@@ -1077,58 +1096,142 @@ a {
   color: var(--ink-2);
 }
 
-/* 推薦 */
-.quotes {
+/* 專利清單（放在 Achievements 裡） */
+.patents {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 32px 48px;
+  gap: 8px;
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
 }
-.quote {
+.patents li {
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+.patents a {
+  display: inline-block;
+  margin-left: 4px;
+  font-family: var(--pixel);
+  font-size: 10px;
+  color: var(--blue);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 1px solid currentColor;
+}
+.patents a:hover {
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+/* 社群（bento：精選佔兩欄，最後一格是推薦引言） */
+.guild {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  list-style: none;
   margin: 0;
-  padding-top: 28px;
-  border-top: 2px solid var(--ink);
+  padding: 0;
 }
-.quote__mark {
-  width: 45px;
-  height: 30px;
-  fill: var(--c);
-  image-rendering: pixelated;
-  margin-bottom: 18px;
-}
-.quote blockquote {
-  margin: 0 0 24px;
-  font-size: clamp(1.25rem, 2vw, 1.7rem);
-  font-weight: 600;
-  font-stretch: 106%;
-  line-height: 1.28;
-  letter-spacing: -0.015em;
-}
-.quote figcaption {
+.guild__item {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 10px;
+  padding: 22px 22px 24px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 0 0 0 var(--c);
+  transition:
+    transform 0.2s var(--ease),
+    box-shadow 0.2s var(--ease),
+    opacity 0.7s var(--ease);
 }
-.quote figcaption span {
+.guild__item:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--c);
+}
+.guild__item--featured {
+  grid-column: span 2;
+  padding: 30px 30px 32px;
+  background-color: color-mix(in srgb, var(--c) 10%, var(--paper));
+  background-image: url(/ht/corner-yellow.svg);
+  background-size: 60% auto;
+  background-position: right top;
+  background-repeat: no-repeat;
+}
+.guild__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 4px;
   font-family: var(--pixel);
   font-size: 10.5px;
   text-transform: uppercase;
   color: var(--ink-2);
 }
-.sidequests {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px 48px;
-  list-style: none;
-  margin: clamp(64px, 8vw, 112px) 0 0;
-  padding: 0;
+.guild__role {
+  background: var(--c);
+  color: var(--on, var(--paper));
+  padding: 4px 7px 3px;
+  text-align: right;
 }
-.sidequests .eyebrow {
-  font-size: 10.5px;
+.guild h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
 }
-.sidequests p {
-  margin: 12px 0 0;
+.guild__item--featured h3 {
+  font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+  font-stretch: 118%;
+  letter-spacing: -0.035em;
+  max-width: 16em;
+}
+.guild__text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
   color: var(--ink-2);
-  font-size: 15.5px;
+}
+.guild__item--featured .guild__text {
+  font-size: 1.05rem;
+  max-width: 34em;
+}
+.guild__quote {
+  --c: var(--pink);
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.quote__mark {
+  width: 36px;
+  height: 24px;
+  fill: var(--pink);
+  image-rendering: pixelated;
+}
+.guild__quote blockquote {
+  margin: 4px 0 0;
+  flex: 1;
+  font-size: 1.3rem;
+  font-weight: 650;
+  font-stretch: 106%;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+.guild__cite {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+}
+.guild__cite span {
+  font-family: var(--pixel);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--paper-2a);
 }
 
 /* 聯絡 */
@@ -1258,8 +1361,12 @@ a {
 /* ── 斷點 ───────────────────────────────────── */
 
 @media (max-width: 1080px) {
-  .builds {
+  .builds,
+  .guild {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .guild__quote {
+    grid-column: span 2;
   }
   .quest {
     grid-template-columns: minmax(0, 1fr);
@@ -1352,15 +1459,17 @@ a {
     border-top: 1px solid var(--line);
     margin-top: 24px;
   }
-  .quotes,
-  .sidequests {
-    grid-template-columns: minmax(0, 1fr);
-  }
+
 }
 
 @media (max-width: 620px) {
-  .builds {
+  .builds,
+  .guild {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .guild__item--featured,
+  .guild__quote {
+    grid-column: auto;
   }
   .brand span {
     display: none;

@@ -1,0 +1,20 @@
+---
+// 作品 / 社群卡片的外部連結；沒有 href 代表還在做，只顯示文字
+import type { Link } from '../data/content';
+
+interface Props {
+  link: Link;
+}
+
+const { link } = Astro.props;
+---
+
+{
+  link.href ? (
+    <a class="linkout" href={link.href} target="_blank" rel="noopener">
+      {link.label} <span aria-hidden="true">↗</span>
+    </a>
+  ) : (
+    <span class="linkout linkout--soon">{link.label} · in progress</span>
+  )
+}

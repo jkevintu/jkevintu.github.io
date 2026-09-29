@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { BUILDS, COMMUNITY, PATENTS } from '../../src/data/content';
 
 /** canvas 上有多少像素被畫到（抽樣） */
 async function paintedPixels(page: Page): Promise<number> {
@@ -69,12 +70,12 @@ test.describe('home', () => {
   test('作品卡片的體素圖示都畫好了', async ({ page }) => {
     await page.goto('/');
     await page.locator('#work').scrollIntoViewIfNeeded();
-    await expect(page.locator('canvas[data-model][data-ready="true"]')).toHaveCount(8);
+    await expect(page.locator('canvas[data-model][data-ready="true"]')).toHaveCount(BUILDS.length);
   });
 
   test('導覽列錨點都存在', async ({ page }) => {
     await page.goto('/');
-    for (const id of ['tour', 'work', 'path', 'contact']) await expect(page.locator(`#${id}`)).toHaveCount(1);
+    for (const id of ['tour', 'work', 'path', 'community', 'contact']) await expect(page.locator(`#${id}`)).toHaveCount(1);
     await expect(page.getByRole('link', { name: 'Say hi' })).toHaveAttribute('href', 'mailto:ktu@jkevintu.com');
   });
 
@@ -86,6 +87,25 @@ test.describe('home', () => {
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
       expect(overflow).toBeLessThanOrEqual(0);
     }
+  });
+
+  test('經歷標題、專利連結與社群區', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#path-title')).toHaveText('Engineer → PM → AI Builder.');
+    const links = page.locator('.patents a');
+    await expect(links).toHaveCount(PATENTS.flatMap((p) => p.numbers).length);
+    for (const href of await links.evaluateAll((els) => els.map((e) => (e as HTMLAnchorElement).href)))
+      expect(href).toMatch(/^https:\/\/patents\.google\.com\/patent\//);
+    // 純文字（複製、閱讀模式）時標題與公開號之間要有空白
+    await expect(page.locator('.patents li').first()).toContainText('environment US 2024/0185306 A1');
+    await expect(page.locator('.patents li').nth(1)).toContainText('A1 WO 2024/151578 A1');
+    await expect(page.locator('#community .guild__item--featured')).toHaveCount(1);
+    await expect(page.locator('#community blockquote')).toContainText('most passionate and creative PM');
+    await expect(page.getByText('Side quest · Writing')).toHaveCount(0);
+    // 已上線的產品是可點的外部連結；還在做的只顯示文字
+    for (const href of ['https://karakuma.com', 'https://elephantgym.co', 'https://taro-us.org'])
+      await expect(page.locator(`a.linkout[href="${href}"]`)).toHaveCount(1);
+    await expect(page.locator('.linkout--soon')).toContainText('makeready.design');
   });
 
   test('結構化資料可解析', async ({ page }) => {
@@ -114,7 +134,8 @@ test.describe('降級', () => {
     await expect(page.locator('h1')).toBeVisible();
     for (let i = 1; i <= 5; i++) await expect(page.locator(`.chapter[data-index="${i}"]`)).toBeVisible();
     await expect(page.locator('[data-canvas]')).toBeHidden();
-    await expect(page.locator('#work .card')).toHaveCount(8);
+    await expect(page.locator('#work .card')).toHaveCount(BUILDS.length);
+    await expect(page.locator('#community .guild__item')).toHaveCount(COMMUNITY.length + 1);
     await ctx.close();
   });
 });

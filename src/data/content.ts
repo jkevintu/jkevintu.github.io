@@ -102,11 +102,28 @@ export interface Stat {
 export const STATS: Stat[] = [
   { value: '15+', label: 'years shipping on the web', note: 'since 2011 — Boston to the Bay', ink: 'blue' },
   { value: '$1M+', label: 'ARR from AI products', note: 'enterprise & S&P 500 at Firework', ink: 'pink' },
-  { value: '48h', label: 'idea → working AI service', note: 'CaringAI, ElevenLabs hackathon', ink: 'yellow' },
-  { value: '2×', label: 'founder', note: 'QuikForce · Life Is Limited', ink: 'blue' },
+  { value: '6', label: 'AI patent filings', note: 'co-inventor · generative video, 2024', ink: 'yellow' },
+  { value: '3×', label: 'founder', note: 'QuikForce · Life Is Limited · Makeready', ink: 'blue' },
 ];
 
-export type ModelId = 'antenna' | 'avatar' | 'servers' | 'funnel' | 'phone' | 'truck' | 'speaker' | 'cap';
+export type ModelId =
+  | 'antenna'
+  | 'avatar'
+  | 'servers'
+  | 'funnel'
+  | 'phone'
+  | 'truck'
+  | 'speaker'
+  | 'cap'
+  | 'mic'
+  | 'press'
+  | 'patron';
+
+export interface Link {
+  label: string;
+  /** 沒有 href 表示還沒上線，只顯示文字 */
+  href?: string;
+}
 
 export interface Build {
   title: string;
@@ -117,8 +134,10 @@ export interface Build {
   model: ModelId;
   ink: InkName;
   featured?: boolean;
+  link?: Link;
 }
 
+// 精選 6 件（3×2）。之後有新作品就直接替換，不必湊滿。
 export const BUILDS: Build[] = [
   {
     title: 'Agent Studio',
@@ -131,67 +150,52 @@ export const BUILDS: Build[] = [
     featured: true,
   },
   {
+    title: 'Makeready',
+    org: 'Founder',
+    years: '2026 — now',
+    body: 'A proofing platform for design studios. It lines up approved copy against the finished PDF, flags missing, extra and changed text — Chinese included — and tracks review to sign-off.',
+    tags: ['Own venture', 'CJK proofing', 'AI-built'],
+    model: 'press',
+    ink: 'yellow',
+    link: { label: 'makeready.design' },
+  },
+  {
+    title: 'Karakuma',
+    org: 'Side project',
+    years: '2026 — now',
+    body: 'Karaoke-party rooms in the browser. Open a room, share a link or QR code, and friends queue YouTube songs from their phones into one live playlist. Built with AI coding agents.',
+    tags: ['Party app', 'Real-time', 'AI-built'],
+    model: 'mic',
+    ink: 'pink',
+    link: { label: 'karakuma.com', href: 'https://karakuma.com' },
+  },
+  {
     title: 'AVA — AI Virtual Assistant',
     org: 'Firework',
     years: '2024',
     body: 'A video-native shopping assistant with a face, a voice and a brand-tuned brain, built on multimodal models and each brand’s own video library.',
     tags: ['Multimodal', 'RAG', 'Launch'],
     model: 'avatar',
-    ink: 'pink',
-  },
-  {
-    title: 'AI workflows for enterprise',
-    org: 'Firework',
-    years: '2020 — 2025',
-    body: 'RAG, prompt engineering, TTS / STT and digital-agent generation shipped to enterprise and S&P 500 customers — $1M+ ARR.',
-    tags: ['LLMOps', 'TTS / STT', 'Enterprise'],
-    model: 'servers',
     ink: 'yellow',
   },
   {
-    title: 'CMS Content Importer',
-    org: 'Firework',
-    years: 'Growth feature',
-    body: 'Took social-video import from concept to reality, widening the content customers could bring in — and noticeably lifting DAU.',
-    tags: ['Growth', '0 → 1', 'CMS'],
-    model: 'funnel',
-    ink: 'blue',
-  },
-  {
-    title: 'CaringAI',
-    org: 'ElevenLabs Hackathon',
-    years: '2025',
-    body: 'An AI companion that phones your loved ones to check in. Login, scheduling, calling and credits — built end-to-end in 48 hours.',
-    tags: ['Voice AI', 'Twilio', 'Hackathon'],
-    model: 'phone',
-    ink: 'pink',
-  },
-  {
-    title: 'QuikForce',
-    org: 'Co-founder & CTO',
-    years: '2015 — 2016',
-    body: 'An on-demand moving marketplace in Cambridge, MA, with a machine-learning matcher that paired customers with the right movers.',
-    tags: ['Founder', 'ML', 'Marketplace'],
-    model: 'truck',
-    ink: 'yellow',
-  },
-  {
-    title: 'Elephant Gym & Fantimate',
+    title: 'Elephant Gym',
     org: 'Life Is Limited',
-    years: '2021 — now',
-    body: 'The official site for Taiwanese math-rock band Elephant Gym, plus Fantimate — a Patreon-style membership platform for artists.',
-    tags: ['Brand', 'Web', 'Creator economy'],
+    years: '2021 — 2024',
+    body: 'The official website for Taiwanese math-rock band Elephant Gym: a custom WordPress theme running as a Vue app, later extended with a trilingual personality test for their album Dreams.',
+    tags: ['WordPress', 'Vue', 'Music'],
     model: 'speaker',
-    ink: 'blue',
+    ink: 'pink',
+    link: { label: 'elephantgym.co', href: 'https://elephantgym.co' },
   },
   {
-    title: 'Accessible admissions UI',
-    org: 'Liaison International',
-    years: '2017 — 2019',
-    body: 'Front-end backbone for one of the largest centralized school-application platforms in the US, with an obsession for ADA / 508 accessibility.',
-    tags: ['AngularJS', 'Accessibility', 'Scale'],
-    model: 'cap',
-    ink: 'pink',
+    title: 'Fantimate',
+    org: 'Client · Life Is Limited',
+    years: '2022 — 2024',
+    body: 'Fantimate, a Taipei company, runs merch shops and members-only fan clubs for music creators. I built custom Shopify pages for artist and fan campaigns, plus early work on its membership app.',
+    tags: ['Client work', 'Shopify', 'Creator economy'],
+    model: 'patron',
+    ink: 'blue',
   },
 ];
 
@@ -213,7 +217,7 @@ export interface World {
 export const WORLDS: World[] = [
   {
     name: 'World 3',
-    subtitle: 'AI platforms',
+    subtitle: 'AI Builder',
     ink: 'pink',
     levels: [
       { lv: '10', years: '2025 — now', role: 'Sr. Product Manager, AI', org: 'Agora', note: 'Agent Studio — AI voice agents at scale.' },
@@ -246,30 +250,127 @@ export const WORLDS: World[] = [
 
 export const SPAWN = { title: 'B.S., Computer Science & Engineering', org: 'Yuan Ze University' } as const;
 
+export interface Patent {
+  /** 公開號（同一發明的 US / WO 放在一起） */
+  numbers: string[];
+  title: string;
+}
+
+/** 共同發明人，2024 年公開 */
+export const PATENTS: Patent[] = [
+  { numbers: ['US 2024/0185306 A1'], title: 'Text-driven AI-assisted short-form video creation in an e-commerce environment' },
+  { numbers: ['US 2024/0233775 A1', 'WO 2024/151578 A1'], title: 'Augmented performance replacement in a short-form video' },
+  { numbers: ['US 2024/0267573 A1'], title: 'Livestream with synthetic scene insertion' },
+  { numbers: ['US 2024/0290024 A1'], title: 'Dynamic synthetic video chat agent replacement' },
+  { numbers: ['US 2024/0428827 A1'], title: 'Expandable video loop with replacement audio' },
+];
+
+/** Google Patents 連結：US 2024/0185306 A1 → US20240185306A1 */
+export const patentUrl = (number: string): string =>
+  `https://patents.google.com/patent/${number.replace(/[\s/]/g, '')}`;
+
+export interface Award {
+  year: string;
+  event: string;
+  prize: string;
+  role: string;
+  project: string;
+  note: string;
+}
+
+export const AWARDS: Award[] = [
+  {
+    year: '2014',
+    event: 'IDHack',
+    prize: 'Grand Prize',
+    role: 'Team lead',
+    project: 'Peace Corps opportunity portal',
+    note: 'Rebuilt the Peace Corps volunteer-recruiting portal around a simple, personalized workflow.',
+  },
+  {
+    year: '2014',
+    event: 'BattleHack',
+    prize: 'context.io Prize',
+    role: 'Lead developer',
+    project: 'PotholeSonar',
+    note: 'Sound alerts that steer cyclists around potholes, built on Boston open data and GPS.',
+  },
+];
+
 export interface Quote {
   text: string;
   name: string;
   role: string;
-  ink: InkName;
 }
 
-export const QUOTES: Quote[] = [
+export const PULL_QUOTE: Quote = {
+  text: 'The most passionate and creative PM I have ever worked with.',
+  name: 'Jing Chen',
+  role: 'Director of Engineering, Firework',
+};
+
+export interface CommunityRole {
+  org: string;
+  role: string;
+  /** 年份或地點 */
+  years: string;
+  text: string;
+  ink: InkName;
+  featured?: boolean;
+  link?: Link;
+}
+
+// 社群角色：職稱、年份與 Café Philo 的角色是 K2 本人提供；其餘描述盡量以公開資料查證。
+export const COMMUNITY: CommunityRole[] = [
   {
-    text: 'The most passionate and creative PM I have ever worked with. He consistently generates innovative ideas to enhance product usage and usability.',
-    name: 'Jing Chen',
-    role: 'Director of Engineering, Firework',
+    org: 'SF Taiwan Day 2024',
+    role: 'General convener',
+    years: '2024 · Oakland Coliseum',
+    text: 'A day of baseball and Taiwanese heritage at the Oakland Coliseum, where NVIDIA CEO Jensen Huang threw the ceremonial first pitch.',
+    ink: 'yellow',
+    featured: true,
+  },
+  {
+    org: 'TARO — Taiwanese American Roots Organization',
+    role: 'President',
+    years: '2026 — now',
+    text: 'Connecting people to Taiwan through educational and cultural programs — sports, music and the arts. I also built its website.',
+    ink: 'pink',
+    link: { label: 'taro-us.org', href: 'https://taro-us.org' },
+  },
+  {
+    org: 'FAPA Northern California',
+    role: 'Chapter President',
+    years: '2024 — 2026',
+    text: 'The Formosan Association for Public Affairs: Taiwan advocacy with Congress, plus community events across the Bay Area.',
+    ink: 'blue',
+  },
+  {
+    org: 'SF Pride · Team Taiwan',
+    role: 'Head of Marketing & PR',
+    years: '2025 — 2026',
+    text: 'Marketing and PR for Team Taiwan, the Taiwanese contingent marching in the San Francisco Pride Parade.',
     ink: 'pink',
   },
   {
-    text: 'His engineering insight immediately multiplied his ability to look at product with understanding the nuances needed to successfully build and launch a product, especially AI driven product.',
-    name: 'Stefan Backor',
-    role: 'Teammate at Firework',
+    org: 'Café Philo (哲學星期五)',
+    role: 'Host & designer',
+    years: 'Boston · Bay Area',
+    text: 'The Taipei-born civic salon for thinking out loud together. I hosted conversations and designed event visuals for its Boston and Bay Area chapters.',
+    ink: 'yellow',
+  },
+  {
+    org: 'Voice AI Mixer · Boston Tech Week',
+    role: 'Co-host',
+    years: '2026',
+    text: 'Brought together founders, operators and investors building in voice and conversational AI, as part of Convo AI World Boston.',
     ink: 'blue',
   },
+  {
+    org: 'MIT Cambridge Chinese Choral Society',
+    role: 'President',
+    years: '2017 — 2019',
+    text: 'Led the choir in sharing cultures with the community through the study and performance of choral music.',
+    ink: 'pink',
+  },
 ];
-
-export const SIDE_QUESTS = [
-  { label: 'Community', text: 'Co-hosted the Voice AI Mixer at Boston Tech Week, part of Convo AI World Boston (May 2026).' },
-  { label: 'Writing', text: '“AI’s true value is beyond ROI” — why capability, not efficiency, is the real unlock.' },
-  { label: 'Choir', text: 'President of the MIT Cambridge Chinese Choral Society (2017 — 2019).' },
-] as const;

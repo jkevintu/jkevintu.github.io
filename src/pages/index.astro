@@ -1,7 +1,8 @@
 ---
+import LinkOut from '../components/LinkOut.astro';
 import Tour from '../components/Tour.astro';
 import Base from '../layouts/Base.astro';
-import { BUILDS, NOW, QUOTES, SIDE_QUESTS, SITE, SPAWN, STATS, WORLDS } from '../data/content';
+import { AWARDS, BUILDS, COMMUNITY, NOW, PATENTS, PULL_QUOTE, SITE, SPAWN, STATS, WORLDS, patentUrl } from '../data/content';
 import { INK_HEX } from '../lib/iso/palette';
 import { cubeSvg } from '../lib/iso/sprite';
 
@@ -64,7 +65,7 @@ const bigCube = cubeSvg({ top: INK_HEX.yellow, left: INK_HEX.pink, right: INK_HE
           <p class="eyebrow">Selected builds</p>
           <h2 id="work-title">Things I’ve taken from fog to shipped.</h2>
         </div>
-        <p>Platforms, AI features, founder bets and craft projects — each one started as a vague idea and ended up in real people’s hands.</p>
+        <p>Two products I’m building with AI agents, AI products from my day jobs at Agora and Firework, and craft projects for clients — each one started as a fuzzy idea.</p>
       </header>
       <ul class="builds">
         {
@@ -86,6 +87,7 @@ const bigCube = cubeSvg({ top: INK_HEX.yellow, left: INK_HEX.pink, right: INK_HE
                     <li>{t}</li>
                   ))}
                 </ul>
+                {b.link && <LinkOut link={b.link} />}
               </div>
             </li>
           ))
@@ -99,7 +101,7 @@ const bigCube = cubeSvg({ top: INK_HEX.yellow, left: INK_HEX.pink, right: INK_HE
     <div class="container quest">
       <header class="quest__intro" data-reveal>
         <p class="eyebrow">Quest log</p>
-        <h2 id="path-title">Engineer → PM → AI platforms.</h2>
+        <h2 id="path-title">Engineer → PM → AI Builder.</h2>
         <p>Fifteen years, ten levels. I started by writing the front-end, then founded, then moved into product — and never stopped building along the way.</p>
         <div class="spawn">
           <span class="spawn__label">Spawn point</span>
@@ -132,44 +134,94 @@ const bigCube = cubeSvg({ top: INK_HEX.yellow, left: INK_HEX.pink, right: INK_HE
             </section>
           ))
         }
+        <section class="world" data-reveal style="--c: var(--ink)" aria-label="Achievements: patents and awards">
+          <h3 class="world__head">
+            <b>Achievements</b>
+            <span>Patents &amp; awards</span>
+          </h3>
+          <ol class="levels">
+            <li class="level">
+              <span class="level__lv">Pat ×{PATENTS.reduce((n, p) => n + p.numbers.length, 0)}</span>
+              <span class="level__years">2024</span>
+              <div class="level__main">
+                <p class="level__role">
+                  Co-inventor, {PATENTS.reduce((n, p) => n + p.numbers.length, 0)} patent filings <span>· generative video &amp; synthetic hosts</span>
+                </p>
+                <ul class="patents">
+                  {
+                    PATENTS.map((p) => (
+                      <li>
+                        {p.title}{' '}
+                        {p.numbers.map((n, i) => (
+                          <>
+                            {i > 0 && ' '}
+                            <a href={patentUrl(n)} target="_blank" rel="noopener">
+                              {n}
+                            </a>
+                          </>
+                        ))}
+                      </li>
+                    ))
+                  }
+                </ul>
+              </div>
+            </li>
+            {
+              AWARDS.map((a) => (
+                <li class="level">
+                  <span class="level__lv">Win</span>
+                  <span class="level__years">{a.year}</span>
+                  <div class="level__main">
+                    <p class="level__role">
+                      {a.event} {a.prize} <span>· {a.role}, {a.project}</span>
+                    </p>
+                    <p class="level__note">{a.note}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </section>
       </div>
     </div>
   </section>
 
-  <!-- 05 Party notes -->
-  <section class="section" aria-labelledby="notes-title">
+  <!-- 05 Community -->
+  <section class="section" id="community" aria-labelledby="community-title">
     <div class="container">
-      <header class="section__head section__head--solo" data-reveal>
+      <header class="section__head" data-reveal>
         <div>
-          <p class="eyebrow">Party notes</p>
-          <h2 id="notes-title">What teammates say.</h2>
+          <p class="eyebrow">Side quests · Community</p>
+          <h2 id="community-title">I build communities, too.</h2>
         </div>
+        <p>Taiwanese-American civic life, philosophy nights and Pride — the same muscle as product: gather people around a fuzzy idea, then make it real.</p>
       </header>
-      <div class="quotes">
+      <ul class="guild">
         {
-          QUOTES.map((q) => (
-            <figure class="quote" data-reveal style={`--c: var(--${q.ink})`}>
-              <svg class="quote__mark" viewBox="0 0 9 6" shape-rendering="crispEdges" aria-hidden="true">
-                <path d="M0 0h3v4H2v1H1v1H0zM5 0h3v4H7v1H6v1H5z" />
-              </svg>
-              <blockquote>{q.text}</blockquote>
-              <figcaption>
-                <strong>{q.name}</strong>
-                <span>{q.role}</span>
-              </figcaption>
-            </figure>
-          ))
-        }
-      </div>
-      <ul class="sidequests">
-        {
-          SIDE_QUESTS.map((s) => (
-            <li data-reveal>
-              <span class="eyebrow">Side quest · {s.label}</span>
-              <p>{s.text}</p>
+          COMMUNITY.map((c) => (
+            <li class:list={['guild__item', { 'guild__item--featured': c.featured }]} data-reveal style={`--c: var(--${c.ink})`}>
+              <p class="guild__meta">
+                <span>{c.years}</span>
+                <span class="guild__role" data-ink={c.ink}>
+                  {c.role}
+                </span>
+              </p>
+              <h3>{c.org}</h3>
+              <p class="guild__text">{c.text}</p>
+              {c.link && <LinkOut link={c.link} />}
             </li>
           ))
         }
+        <li class="guild__item guild__quote" data-reveal>
+          <svg class="quote__mark" viewBox="0 0 9 6" shape-rendering="crispEdges" aria-hidden="true">
+            <path d="M0 0h3v4H2v1H1v1H0zM5 0h3v4H7v1H6v1H5z" />
+          </svg>
+          <blockquote>{PULL_QUOTE.text}</blockquote>
+          <p class="guild__cite">
+            <strong>{PULL_QUOTE.name}</strong>
+            <span>{PULL_QUOTE.role}</span>
+          </p>
+        </li>
       </ul>
     </div>
   </section>
