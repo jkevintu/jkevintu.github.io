@@ -103,9 +103,18 @@ test.describe('home', () => {
     await expect(page.locator('#community blockquote')).toContainText('most passionate and creative PM');
     await expect(page.getByText('Side quest · Writing')).toHaveCount(0);
     // 已上線的產品是可點的外部連結；還在做的只顯示文字
-    for (const href of ['https://karakuma.com', 'https://elephantgym.co', 'https://taro-us.org'])
+    for (const href of [
+      'https://karakuma.com',
+      'https://elephantgym.co',
+      'https://taro-us.org',
+      'https://club.fantimate.com/spacen/',
+      'https://firework.com/blog/firework-launches-ava-the-virtual-shopping-assistant-giving-a-face-to-e-commerce',
+    ])
       await expect(page.locator(`a.linkout[href="${href}"]`)).toHaveCount(1);
     await expect(page.locator('.linkout--soon')).toContainText('makeready.design');
+    // 先不公開的說法
+    await expect(page.locator('body')).not.toContainText('$1M');
+    await expect(page.locator('body')).not.toContainText('3×');
   });
 
   test('結構化資料可解析', async ({ page }) => {

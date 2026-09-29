@@ -76,7 +76,7 @@ export const CHAPTERS: Chapter[] = [
     stage: '05',
     place: 'The Launch Pad',
     title: 'Ship it. Watch it run.',
-    body: 'Then the only metric that matters: real people using the thing. At Firework that meant $1M+ ARR from AI products. At Agora, it’s voice agents running at scale.',
+    body: 'Then the only metric that matters: real people using the thing. At Firework that meant AI products used by enterprise and S&P 500 brands. At Agora, it’s voice agents running at scale.',
     tags: ['Go-to-market', 'Metrics', 'Iteration'],
     ink: 'pink',
   },
@@ -101,9 +101,8 @@ export interface Stat {
 
 export const STATS: Stat[] = [
   { value: '15+', label: 'years shipping on the web', note: 'since 2011 — Boston to the Bay', ink: 'blue' },
-  { value: '$1M+', label: 'ARR from AI products', note: 'enterprise & S&P 500 at Firework', ink: 'pink' },
   { value: '6', label: 'AI patent filings', note: 'co-inventor · generative video, 2024', ink: 'yellow' },
-  { value: '3×', label: 'founder', note: 'QuikForce · Life Is Limited · Makeready', ink: 'blue' },
+  { value: '2×', label: 'founder', note: 'QuikForce · Life Is Limited', ink: 'pink' },
 ];
 
 export type ModelId =
@@ -151,10 +150,10 @@ export const BUILDS: Build[] = [
   },
   {
     title: 'Makeready',
-    org: 'Founder',
+    org: 'Own product',
     years: '2026 — now',
     body: 'A proofing platform for design studios. It lines up approved copy against the finished PDF, flags missing, extra and changed text — Chinese included — and tracks review to sign-off.',
-    tags: ['Own venture', 'CJK proofing', 'AI-built'],
+    tags: ['Design studios', 'CJK proofing', 'AI-built'],
     model: 'press',
     ink: 'yellow',
     link: { label: 'makeready.design' },
@@ -177,6 +176,10 @@ export const BUILDS: Build[] = [
     tags: ['Multimodal', 'RAG', 'Launch'],
     model: 'avatar',
     ink: 'yellow',
+    link: {
+      label: 'firework.com',
+      href: 'https://firework.com/blog/firework-launches-ava-the-virtual-shopping-assistant-giving-a-face-to-e-commerce',
+    },
   },
   {
     title: 'Elephant Gym',
@@ -189,13 +192,14 @@ export const BUILDS: Build[] = [
     link: { label: 'elephantgym.co', href: 'https://elephantgym.co' },
   },
   {
-    title: 'Fantimate',
+    title: 'Fantimate Club',
     org: 'Client · Life Is Limited',
     years: '2022 — 2024',
-    body: 'Fantimate, a Taipei company, runs merch shops and members-only fan clubs for music creators. I built custom Shopify pages for artist and fan campaigns, plus early work on its membership app.',
-    tags: ['Client work', 'Shopify', 'Creator economy'],
+    body: 'A patron-style platform that gives creators a public space to connect with their fans. Client work: early front-end on the club app, plus Shopify pages for artist and fan campaigns.',
+    tags: ['Client work', 'Creator economy', 'Nuxt'],
     model: 'patron',
     ink: 'blue',
+    link: { label: 'club.fantimate.com', href: 'https://club.fantimate.com/spacen/' },
   },
 ];
 
@@ -229,7 +233,7 @@ export const WORLDS: World[] = [
     subtitle: 'Engineer → PM',
     ink: 'blue',
     levels: [
-      { lv: '08', years: '2020 — 2025', role: 'Product Manager', org: 'Firework', note: 'AI products for enterprise & S&P 500 customers; $1M+ ARR.' },
+      { lv: '08', years: '2020 — 2025', role: 'Product Manager', org: 'Firework', note: 'AI products for enterprise & S&P 500 customers.' },
       { lv: '07', years: '2017 — 2019', role: 'Senior UI Developer', org: 'Liaison International', note: 'Accessible front-end for a national admissions platform.' },
       { lv: '06', years: '2016 — 2017', role: 'Senior Frontend Developer', org: 'Gamer Sensei', note: 'Rebuilt the product into a full e-commerce platform; SEO, testing, mentoring.' },
     ],

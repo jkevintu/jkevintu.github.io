@@ -32,7 +32,8 @@ describe('content', () => {
   });
 
   it('數字與推薦都有值', () => {
-    expect(STATS).toHaveLength(4);
+    expect(STATS).toHaveLength(3);
+    expect(JSON.stringify(STATS)).not.toMatch(/ARR/);
     expect(PULL_QUOTE.name && PULL_QUOTE.role && PULL_QUOTE.text).toBeTruthy();
   });
 
