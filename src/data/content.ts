@@ -342,13 +342,15 @@ export const COMMUNITY: CommunityRole[] = [
     ink: 'pink',
     link: { label: 'taro-us.org', href: 'https://taro-us.org' },
   },
-  {
-    org: 'FAPA Northern California',
-    role: 'Chapter President',
-    years: '2024 — 2026',
-    text: 'The Formosan Association for Public Affairs: Taiwan advocacy with Congress, plus community events across the Bay Area.',
-    ink: 'blue',
-  },
+  // Temporarily hidden at the owner's request (2026-10-06).
+  // To restore this entry, uncomment the object below.
+  // {
+  //   org: 'FAPA Northern California',
+  //   role: 'Chapter President',
+  //   years: '2024 — 2026',
+  //   text: 'The Formosan Association for Public Affairs: Taiwan advocacy with Congress, plus community events across the Bay Area.',
+  //   ink: 'blue',
+  // },
   {
     org: 'SF Pride · Team Taiwan',
     role: 'Head of Marketing & PR',

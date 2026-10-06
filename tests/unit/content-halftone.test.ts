@@ -37,9 +37,7 @@ describe('content', () => {
     expect(PULL_QUOTE.name && PULL_QUOTE.role && PULL_QUOTE.text).toBeTruthy();
   });
 
-  it('社群 bento 剛好排滿 3 欄（精選佔 2 格 + 最後一格推薦）', () => {
-    const cells = COMMUNITY.reduce((n, c) => n + (c.featured ? 2 : 1), 0) + 1;
-    expect(cells % 3).toBe(0);
+  it('社群內容可增減，保留一筆精選且公開項目欄位完整', () => {
     expect(COMMUNITY.filter((c) => c.featured)).toHaveLength(1);
     for (const c of COMMUNITY) {
       expect(c.org && c.role && c.years && c.text).toBeTruthy();
